@@ -1,0 +1,476 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, user-scalable=no"/><!-- "position: fixed" fix for Android 2.2+ -->
+	<title>JUEGO PAGINACI&Oacute;N</title>
+
+	<style>
+		a{color:#ccd4ff}
+		a:visited, a:active{
+			color:white;
+		}
+		body{
+			text-align:center;
+			font-family: arial;
+			margin: 0px; /* for IE6 / IE7 */		}
+		table{
+			float:left;
+			border-spacing:0;
+    			border-collapse:collapse;
+			border: 2px dotted #aad4ff;
+		}
+		.space{margin-left:40px}
+		td{width:50px}
+		/* drag area */
+		#drag{
+			display: table;
+			width: 100%;
+			margin: auto;
+		}
+		#head,#footer,th, #temp{
+               		/*background: url('head.jpeg');*/
+			background-color: #6699FF;
+			padding-top:0px;
+			color:rgb(255,255,255);
+		}
+		th, th.border{
+			border:1px solid white;
+			font-size:14pt;
+		}
+		#head{
+			padding-left:40px;
+			height:60px;
+			font-size:16pt;
+			margin-bottom:20px;
+		}
+		#rectangle{
+			background-color:white;
+			width:700px;
+			display: inline-table;
+			text-align: -webkit-center;
+		}
+		/* drag objects (DIV elements inside table cells) */
+		.drag{
+			color: #499B33;
+			cursor: move;
+			margin: 2px;
+			z-index: 10;
+			background-color: white;
+			text-align: center;
+			font-size: 14pt;
+			font-weight:bold;
+			opacity: 0.7;
+			filter: alpha(opacity=70);
+			/* without width, IE6/7 will not apply filter/opacity to the element ?! */
+			width: 100px;
+			height: 100px;
+			line-height: 35px;
+			/* round corners */
+			border-radius: 4px; /* Opera, Chrome */
+			-moz-border-radius: 4px; /* FF */
+		}
+		.drag:active{
+			opacity: 0.5;
+			color:white;
+			font-size:12pt;
+		}
+		.drag2{
+			color: #499B33;
+			cursor: move;
+			margin: 2px;
+			z-index: 10;
+			background-color: white;
+			text-align: center;
+			font-size: 14pt;
+			font-weight:bold;
+			opacity: 0.7;
+			filter: alpha(opacity=70);
+			/* without width, IE6/7 will not apply filter/opacity to the element ?! */
+			line-height: 35px;
+			/* round corners */
+			border-radius: 4px; /* Opera, Chrome */
+			-moz-border-radius: 4px; /* FF */
+		}
+		.drag2:active{
+			opacity: 0.5;
+			color:white;
+			font-size:12pt;
+		}
+
+
+		/* styles for left table */
+		#table1{
+			background-color: #ccd4ff;
+			border-collapse: collapse;
+			margin-top: 0px;
+		}
+		/* border for table1 */
+		#table1 td {
+			border: 2px solid white;
+			height: 50px;
+			text-align: center;
+			font-size: 14pt;
+			padding: 2px;
+		}
+
+		/* green objects */
+		.green {
+		border: 2px solid #499B33;
+		}
+		.green:active{
+			border: 2px dashed white;
+			background-color: #499B33;
+		}
+		/* orange objects */
+		.orange {
+			border: 2px solid #BF6A30;
+		}
+		.orange:active{
+			border: 2px dashed white;
+			background-color: #BF6A30;
+		}
+
+		/***************** boton comenzar juego **************************************************/
+		button{
+		    	width: 140px;
+			height: 40px;
+			background: #6699FF;
+			color: #ffffff;
+			cursor: pointer;
+			border: 0px; 
+			margin-bottom:20px;
+			margin-right:5px;
+			text-transform:uppercase;
+			border-radius:20%/40%;
+			font-size:12pt;
+			font-weight:bold;
+		}
+
+		button:hover{
+			border: 2px dotted #6699FF;
+			background-color:white;
+			color:#6699FF;
+			font-size:7pt;
+		}
+	    	#cronometro {
+			padding-left: 10px;
+			color: #6A93D4;
+			height: 100px;
+			padding-top: 20px;
+			text-transform:uppercase;
+		} 
+	    	#score {
+			padding-left: 10px;
+			color: red;
+			height: 100px;
+			padding-top: 20px;
+	    	} 
+		.clock {
+			border:1px solid black;
+			margin-bottom:10px;
+			font-size:15pt;
+			color:red;
+		}
+	</style>
+	<script>
+		var N = -1;
+		tmt = null;
+		time_left = 60;
+		a = [];
+		b = [];
+		c = []; 
+		current = N;
+		function $(a){
+			return document.getElementById(a);
+		}
+		function a2html(a, f, deco,type){
+			var dx = "<table id='table1'><colgroup><col width=200/></colgroup><tbody>";
+			for(var i in a){
+				h = f + "("+i+")";
+				dx += "	<tr><td><a href='#' onclick='"+h+"'><div class='drag green'>";
+				dx += "";
+				if(a[i] != N){
+					dx += type + (1 + a[i]);
+				}
+				dx += deco;
+				dx += "";
+				dx += "</div></a></td></tr>";
+			}
+			dx+="</tbody></table>";
+			return dx;
+		}
+		function redraw(){
+			var dy;
+			letter=['','G','M','P','PH'];
+			for (i=0;i<5;i++){
+				//dy = a2html(a, "setCurrent", "&gt;&gt;" ,letter[i],'10');
+				//$("div"+(i+1)+"1").innerHTML = dy;
+				//dy = a2html(b, "putIn", "&gt;&gt;",'','10');
+				//$("div"+(i+1)+"2").innerHTML = dy;
+			}
+			f1 = a2html(a, "setCurrent", "&gt;&gt;" ,'');
+			$("div11").innerHTML = f1;
+			f2 = a2html(a2, "setCurrent", "__" ,'');
+			$("div21").innerHTML = f2;
+			f3 = a2html(a3, "setCurrent", "++" ,'');
+			$("div31").innerHTML = f3;
+			f4 = a2html(a4, "setCurrent", "//" ,'');
+			$("div41").innerHTML = f4;
+			f5 = a2html(a5, "setCurrent", "??" ,'');
+			$("div51").innerHTML = f5;
+			/////////////////////////////////////////
+			e1 = a2html(b, "putIn", "&gt;&gt;",'','');
+			$("div12").innerHTML = e1;
+			e2 = a2html(b2, "putIn", "__",'');
+			$("div22").innerHTML = e2;
+			e3 = a2html(b3, "putIn", "++",'');
+			$("div32").innerHTML = e3;
+			e4 = a2html(b4, "putIn", "//",'');
+			$("div42").innerHTML = e4;
+			e5 = a2html(b5, "putIn", "??",'');
+			$("div52").innerHTML = e5;
+
+			//////////////////////////////			
+			d1 = a2html(c, "void", "",letter[0]);
+			$("div13").innerHTML = d1;
+			d2 = a2html(c2, "void", "",letter[1]);
+			$("div23").innerHTML = d2;
+			d3 = a2html(c3, "void", "",letter[2]);
+			$("div33").innerHTML = d3;
+			d4 = a2html(c4, "void", "",letter[3]);
+			$("div43").innerHTML = d4;
+			d5 = a2html(c5, "void", "",letter[4]);
+			$("div53").innerHTML = d5;
+
+
+		}
+		function setCurrent(cidx){
+			current = cidx;
+		}
+		function putIn(idx){
+			//taken
+			if(b[idx] != N || b2[idx] != N || b3[idx] != N || b4[idx] != N || b5[idx] != N){
+				return;
+			}
+			//nothing
+			if(a[current] == N || a2[current] == N || a3[current] == N || a4[current] == N || a5[current] == N ){
+				return;
+			}
+			b[idx] = a[current];
+			b2[idx] = a2[current];
+			b3[idx] = a3[current];
+			b4[idx] = a4[current];
+			b5[idx] = a5[current];
+			a[current] = N;
+			a2[current] = N;
+			a3[current] = N;
+			a4[current] = N;
+			a5[current] = N;
+			current = N;
+			validate_win_condition(b);
+			validate_win_condition(b2);
+			validate_win_condition(b3);
+			validate_win_condition(b4);
+			validate_win_condition(b5);
+			validate_no_possible_win_condition();
+			redraw();
+		}
+		function validate_no_possible_win_condition(){
+			var ok = 0;
+			for(var i in a){
+				if(a[i] != N){
+					ok = 1;
+					break;
+				}
+			}
+			if(ok == 0){
+				alert("Movio las fichas de forma incorrecta. Usted ha perdido!");
+				reset_game();
+			}
+		}
+		function reset_game(){
+			time_left = 60;
+			a = [0,1,2,3,4];
+			a2 = [0,1,2,3,4];
+			a3 = [0,1,2,3,4];
+			a4 = [0,1,2,3,4];
+			a5 = [0,1,2,3,4];
+			
+			b = [N,N,N,N,N];
+			b2 = [N,N,N,N,N];
+			b3 = [N,N,N,N,N];
+			b4 = [N,N,N,N,N];
+			b5 = [N,N,N,N,N];
+
+			c = [0,1,2,3,4]; // todo random
+			c = shuffle(c);
+			c2 = [0,1,2,3,4]; // todo random
+			c2 = shuffle(c2);
+			c3 = [0,1,2,3,4]; // todo random
+			c3 = shuffle(c3);
+			c4 = [0,1,2,3,4]; // todo random
+			c4 = shuffle(c4);
+			c5 = [0,1,2,3,4]; // todo random
+			c5 = shuffle(c5);
+
+		
+		}
+		function rand(n){
+			return Math.floor(Math.random()*n);
+		}
+		function shuffle(c){
+			var x = 0;
+			var c1 = c;
+			while(x<100){
+				var lidx = rand(c.length);
+				var ridx = rand(c.length);
+				var temp = c1[lidx];
+				c1[lidx] = c1[ridx];
+				c1[ridx] = temp;
+				x++;
+			}
+			return c1;
+		}
+		function validate_win_condition(){
+			var ok = 1;
+			for(var i in b){
+				if(b[i] != c[i]){
+					ok=0;
+					break;
+				}
+			}
+			valor=time_left;
+			if(ok == 1){
+				redraw();
+				var r=confirm("Felicitaciones!!! Usted Gano con un tiempo de "+(60-valor)+"!\nSi quiere jugar de nuevo presione ACEPTAR");
+				if (r==true){
+					clearTimeout(tmt);
+					init();
+				}else{ 
+					location.reload();
+					alert("GRACIAS POR PARTICIPAR.");
+				}
+
+			}
+
+		}
+		function timer(){
+			time_left--;
+			if (time_left == 10){
+				$("clock_bar").style.background='#ff5050';
+			}
+
+			if(time_left == 0){
+				alert("USTED HA PERDIDO.");
+				reset_game();
+				redraw();
+				$("clock_bar").style.background='#50ff50';
+				
+			}
+			tmt = setTimeout(timer, 1000);
+			$("clock").innerHTML = time_left;
+			$("clock_bar").style.width = time_left*5;
+			}
+		function init(){
+			reset_game();
+			redraw();
+			timer();//start_
+		}
+		function restart(){
+			reset_game();
+			time_left = 60;
+			redraw();
+		}
+	</script>
+</head>
+<body>
+	<div id=head>
+		<h1>Paginaci&oacute;n de Memoria</h1>
+	</div>
+	<center>
+		<button onclick="init()">Empezar</button>
+		<button onclick="restart()">Reiniciar</button>
+		<div id=cronometro>time left:
+			<span id=clock></span>
+			<div id=clock_bar style='width:80;height:24px;background:#50ff50'>&nbsp;</div>
+		</div>
+	</center>
+	<table class=space>
+	<tr><th colspan=7> Virtual Memory </th></tr>
+	<tr>
+		<th colspan=3 class=border> Process </th>
+		<th colspan=4 class=border> Address </th>	
+	</tr>
+
+	<tr>
+		<td>
+			<div id=div11></div>
+			<td>
+			<div id=div12></div>
+			</td>
+			<td>
+			<div id=div13></div>
+			</td>
+			<td>
+			<div id=div23></div>
+			</td>
+			<td>
+			<div id=div33></div>
+			</td>
+			<td>
+			<div id=div43></div>
+			</td>
+			<td>
+			<div id=div53></div>
+			</td>
+			
+		</td>
+	</tr>
+	</table>
+	<table class=space>
+	<tr><th colspan=2> Global Direction </th></tr>
+	<tr>
+		<td>
+			<div id=div21></div>
+		</td>
+			<td>
+			<div id=div22></div>
+		</td>
+	</tr>
+	</table>
+	<table class=space>
+	<tr><th colspan=2> Middle Direction </th></tr>
+	<tr>
+		<td>
+			<div id=div31></div>
+		</td>
+		<td>
+			<div id=div32></div>
+		</td>
+	</tr>
+	</table>
+	<table class=space>
+	<tr><th colspan=2> Page Table </th></tr>
+	<tr>
+		<td>
+			<div id=div41></div>
+		</td>
+		<td>
+			<div id=div42></div>
+		</td>
+	</tr>
+	</table>
+	<table class=space>
+	<tr><th colspan=2> Physical Memory </th></tr>
+	<tr>
+		<td>
+			<div id=div51></div>
+		</td>
+		<td>
+			<div id=div52></div>
+		</td>
+	</tr>
+	</table>
+</body>
+</html>
+
+
