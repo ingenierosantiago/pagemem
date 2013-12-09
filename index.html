@@ -9,6 +9,8 @@
 			color:white;
 		}
 		body{
+			background: url('p.png');
+			/*background-color:#EEE8AA;*/
 			text-align:center;
 			font-family: arial;
 			margin: 0px; /* for IE6 / IE7 */		}
@@ -18,7 +20,7 @@
     			border-collapse:collapse;
 			border: 2px dotted #aad4ff;
 		}
-		.space{margin-left:40px}
+		.space{margin-left:20px}
 		td{width:50px}
 		/* drag area */
 		#drag{
@@ -27,8 +29,7 @@
 			margin: auto;
 		}
 		#head,#footer,th, #temp{
-               		/*background: url('head.jpeg');*/
-			background-color: #6699FF;
+      			background-color: #6699FF;
 			padding-top:0px;
 			color:rgb(255,255,255);
 		}
@@ -37,7 +38,7 @@
 			font-size:14pt;
 		}
 		#head{
-			padding-left:40px;
+			padding-left:0px;
 			height:60px;
 			font-size:16pt;
 			margin-bottom:20px;
@@ -61,8 +62,8 @@
 			opacity: 0.7;
 			filter: alpha(opacity=70);
 			/* without width, IE6/7 will not apply filter/opacity to the element ?! */
-			width: 100px;
-			height: 100px;
+			width: 50px;
+			height: 50px;
 			line-height: 35px;
 			/* round corners */
 			border-radius: 4px; /* Opera, Chrome */
